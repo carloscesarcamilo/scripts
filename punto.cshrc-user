@@ -1,0 +1,57 @@
+# $FreeBSD$
+#
+# .cshrc - csh resource script, read at beginning of execution by each shell
+#
+# see also csh(1), environ(7).
+# more examples available at /usr/share/examples/csh/
+#
+
+#source ~/.aliases
+
+# These are normally set through /etc/login.conf.  You may override them here
+# if wanted.
+# set path = (/sbin /bin /usr/sbin /usr/bin /usr/local/sbin /usr/local/bin $HOME/bin)
+# A righteous umask
+umask 022
+
+setenv IOCAGE_COLOR TRUE
+set EDITOR=vi
+set PAGER=less
+set noclobber
+limit coredumpsize 0
+
+set     red="%{\033[1;31m%}"
+set   green="%{\033[1;32m%}"
+set  yellow="%{\033[1;33m%}"
+set    blue="%{\033[1;34m%}"
+set magenta="%{\033[1;35m%}"
+set    cyan="%{\033[1;36m%}"
+set   white="%{\033[1;37m%}"
+set     end="%{\033[0m%} " # This is needed at the end of the prompt
+
+if ($?prompt) then
+        # An interactive shell -- set some stuff up
+#       set prompt = "%N@%m:%~ %# "
+#        set prompt = "${green}%N@%m:${red}%~${white} %# "
+		set prompt = "\n${blue}%d, %D. %w %Y, %P\n${yellow}<`uname -sr`> [%m:%~]\n${blue}%B%U%n@%l%u %#%b "
+
+        set promptchars = "%#"
+        set color
+        set filec
+        set history = 1000
+        set savehist = (1000 merge)
+        set autolist = ambiguous
+        # Use history to aid expansion
+        set autoexpand
+        set autorehash
+        set mail = (/var/mail/$USER)
+        if ( $?tcsh ) then
+                bindkey "^W" backward-delete-word
+                bindkey -k up history-search-backward
+                bindkey -k down history-search-forward
+        endif
+
+endif
+
+# Clean up after ourselves...
+unset red green yellow blue magenta cyan yellow white end

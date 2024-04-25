@@ -1,0 +1,25 @@
+[system=10]
+# Added by desktop-installer.
+add path 'ugen*' mode 0660 group operator
+# Added by desktop-installer.
+add path 'cuaU*' mode 0660 group operator
+# Added by desktop-installer.
+add path 'uhid*' mode 0660 group operator
+# Added by desktop-installer.
+add path 'usbctl*' mode 0660 group operator
+# Added by desktop-installer.
+add path 'usb/*' mode 0660 group operator
+# Added by desktop-installer.
+add path 'video*' mode 0660 group operator
+# Added by desktop-installer.
+add path 'ng_ubt*' mode 0660 group operator
+# Added by desktop-installer.
+add path 'cd*' mode 0660 group operator
+# Added by desktop-installer.
+add path 'da*' mode 0660 group operator
+# Added by desktop-installer.
+add path 'pass*' mode 0660 group operator
+# Added by desktop-installer.
+add path 'xpt*' mode 0660 group operator
+# Added by desktop-installer.
+add path 'mmcsd*' mode 0660 group operator

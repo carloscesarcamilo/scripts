@@ -1,0 +1,68 @@
+###################################################################
+# https://www.osetc.com/en/how-to-setup-pf-firewall-on-freebsd.html
+int_if = "em0"
+lan_net = "192.168.88.0/24"
+
+rfc1918 = "{ 127.0.0.0/8, 172.16.0.0/12, \
+169.254.0.0/16, 192.0.2.0/24, \
+0.0.0.0/8, 240.0.0.0/4, 224.0.0.0/3 }"
+
+#tcp_pass="{ 22 53  80 123 111 443 832 1110 1651 2049 3000 8000 8080 20049 }"
+#udp_pass="{ 53 111 832 1110 1651 2049 20049 }"
+tcp_pass="{ 22 53  80 123 111 443 1110 3000 8000 8080 }"
+udp_pass="{ 53 111 1110 9993}"
+
+# scrub incoming packets
+scrub in all
+
+# setup a default deny policy
+block in all
+block out all
+
+# pass traffic on the loopback interface in either direction
+pass quick on lo0 all
+
+# activate spoofing protection for the internal interface.
+antispoof quick for $int_if inet
+
+############
+block drop in quick on $int_if from $rfc1918 to any
+block drop out quick on $int_if from any to $rfc1918
+############
+
+# only allow ssh connections from the local network if it‘s from the
+# trusted computer, 192.168.0.15. use "block return" so that a TCP RST is
+# sent to close blocked connections right away. use "quick" so that this
+# rule is not overridden by the "pass" rules below.
+# block return in quick on $int_if proto tcp from ! 192.168.0.15 \
+# to $int_if port ssh flags S/SA
+
+# sólo permitir conexiones ssh desde la red local si es desde el
+# ordenador de confianza, 192.168.0.15. usa "block return" para que un TCP RST sea
+# RST para que se envíe un RST TCP para cerrar las conexiones # bloqueadas de inmediato.
+# regla no sea anulada por las reglas "pass" de abajo.
+# bloquear retorno en quick en $int_if proto tcp desde ! 192.168.0.15 \
+# a $int_if puerto ssh flags S/SA
+block return in quick proto tcp from ! 192.168.192.0/24 port ssh flags S/SA
+
+# pass all traffic to and from the local network
+pass in on $int_if from $lan_net to any
+pass out on $int_if from any to $lan_net
+
+# pass out on se refiere al trafico de salida
+pass out quick on $int_if proto tcp to any port $tcp_pass keep state
+pass out quick on $int_if proto udp to any port $udp_pass keep state
+
+# pass tcp, udp, and icmp out on the external (Internet) interface.
+# keep state on udp and icmp and modulate state on tcp.
+pass out on $int_if proto tcp all modulate state flags S/SA
+pass out on $int_if proto { udp, icmp } all keep state
+
+# allow ssh connections in on the external interface as long as they‘re
+# NOT destined for the firewall (i.e., they‘re destined for a machine on
+# the local network). log the initial packet so that we can later tell
+# who is trying to connect. use the tcp syn proxy to proxy the connection.
+#pass in log on $ext_if proto tcp from any to { !$ext_if, !$int_if } \
+#port ssh flags S/SA synproxy state
+pass in log proto tcp from any to { !$int_if } port ssh flags S/SA synproxy state
+#################################################################################

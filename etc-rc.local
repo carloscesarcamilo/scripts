@@ -1,0 +1,102 @@
+# DAEMONS | NO
+sendmail_enable="NONE"
+sendmail_submit_enable="NO"
+sendmail_msp_queue_enable="NO"
+sendmail_outbound_enable="NO"
+
+#clear_tmp_enable="YES"
+#clear_tmp_x="YES"
+hostname="solaris"
+ifconfig_em0="inet 192.168.88.51 netmask 255.255.255.0"
+defaultrouter="192.168.88.1"
+
+# NETWORK 
+background_dhclient=YES
+defaultroute_delay=3
+defaultroute_carrier_delay=3
+
+# NTP
+ntpd_program="/usr/local/sbin/ntpd"
+ntpdate_program="/usr/local/sbin/ntpdate"
+#ntpd_enable="YES"
+ntpd_enable="YES"
+ntpd_sync_on_start="YES"
+
+# POWER
+powerd_enable="YES"
+powerd_flags="-n adaptive -a hiadaptive -b adaptive"
+
+# Set dumpdev to "AUTO" to enable crash dumps, "NO" to disable
+dumpdev="AUTO"
+
+# DAEMONS
+zfs_enable="YES"
+dbus_enable="YES"
+moused_enable="YES"
+syslogd_flags="-s -s"
+
+# MODULES
+kld_list="fusefs cuse /boot/modules/i915kms.ko"
+
+# AUTOMOUNT
+autofs_enable="YES"
+
+# FIREWALL
+pf_enable="YES"
+pf_rules="/etc/pf.conf"
+pflog_enable="YES"
+pflog_logfile="/var/log/pf.log"
+
+devd_enable="YES"
+devfs_system_ruleset="system"
+slim_enable="YES"
+
+# OTHER
+update_motd="NO"
+
+# bastille
+bastille_enable="YES"
+bastille_list="japache jpostgresql jmongodb"
+cloned_interfaces="lo1"
+ifconfig_lo1_name="bastille0"
+
+# postgresql base datos
+postgresql_enable="YES"
+
+# NFS 
+nfs_client_enable="YES"
+hostid_enable="NO"
+
+# ddns freedns
+#ddclient_enable="YES"
+#ddclient_flags="-daemon 300"
+
+# WIRELESS
+wpa_supplicant_program="/usr/sbin/wpa_supplicant"
+#ifconfig_em0="ether e4:b9:7a:6b:96:cd"
+#wlans_iwm0="wlan0"
+#cloned_interfaces="lagg0"
+#ifconfig_lagg0="laggproto failover laggport em0 laggport wlan0 DHCP"
+#create_args_wlan0="country ES regdomain ETSI"
+#ifconfig_wlan0="WPA"
+
+# bhyve virtual machice
+vm_enable="YES"
+vm_dir="zfs:zroot/vm"
+vm_list=""
+vm_delay="5"
+gateway_enable="YES"
+
+# Added by auto-admin from desktop-installer
+moused_port=/dev/ums0
+rpc_statd_enable="YES"
+# Added by auto-admin from desktop-installer
+rpc_lockd_enable="YES"
+# End auto-admin addition
+webcamd_enable="YES"
+#apache24_enable="YES"
+dma_flushq_enable="YES"
+# capa compatibilidad linux
+linux_enable="NO"
+# brave install (vermaden website)
+ubuntu_enable="YES"

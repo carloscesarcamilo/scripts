@@ -1,0 +1,24 @@
+ext_if="em0"
+tcp_ports="{ 137 138 445 139 111 4047 4045 4046 2049 }"
+udp_ports="{ 137 138 139 111 4047 4045 4046 2049 }"
+lan="{ 192.168.88.0/24 }"
+
+set block-policy return
+scrub in on $ext_if all fragment reassemble
+set skip on lo
+
+table <jails> persist
+nat on $ext_if from <jails> to any -> ($ext_if)
+rdr-anchor "rdr/*"
+
+block in all
+pass out quick keep state
+antispoof for $ext_if inet
+
+pass in inet proto tcp from any to any port ssh flags S/SA keep state
+
+# pass out on se refiere al trafico de salida
+#pass out quick on re0 proto tcp to any port $tcp_ports keep state
+pass on em0 proto udp to any port $udp_ports keep state
+pass on em0 proto udp to any port $udp_ports keep state
+
