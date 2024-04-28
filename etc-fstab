@@ -7,7 +7,7 @@ fdesc		/dev/fd			fdescfs	rw		0	0
 proc			/proc		procfs	rw		0	0
 # nfsv4 shared
 tormenta:/poolrecovery      /misc4    nfs     rw,nfsv4,late    	0  	0
-tormenta:/privcode           /mixs4    nfs     ro,nfsv4,late    	0  	0
+tormenta:/code           /mixs4    nfs     ro,nfsv4,late    	0  	0
 tormenta:/confiles/solaris  /mics4    nfs     rw,nfsv4,late    	0  	0
 tormenta:/docs              /mids4    nfs     rw,nfsv4,late    	0  	0
 tormenta:/dellhome 	    /mihs4    nfs     rw,nfsv4,late    	0  	0
