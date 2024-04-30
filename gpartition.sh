@@ -1,15 +1,22 @@
 #!/bin/sh
 ###
-### particionar dispositivo de almacenamiento da0
-### Establecer variables
+### particionar disco da0
+###
+efisize=260M
 drive="da0"
 gpartition="/sbin/gpart"
-swapsize="4GB"
+swapsize=4GB
+
 # elimiar tabla de particiones y crear esquema de particiones (gpt)
   { $gpartition destroy -F $drive && $gpartition create -s gpt $drive; }
 
-$gpartition add   -a 1M -s 10M        -l efi   -t efi          $drive
+# particion de arranque efi
+$gpartition add   -a 1M -s $efisize        -l efi0   -t efi          $drive
+
+# crear la swap si swapsize existe y es diferente de cero
 [ -n "$swapsize" ] && [ "$swapsize" != "0" ] && \
   $gpartition add -a 1M -s $swapsize  -l swap0  -t freebsd-swap $drive
+
+# restro del disto freebsd-zfs
 $gpartition add   -a 1M               -l pool_0 -t freebsd-zfs  $drive
-############################# EOF ####################################
+################################# EOF ################################
